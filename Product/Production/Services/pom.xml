@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.connectopensource</groupId>
+        <artifactId>Production</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>Services</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <skip.unpack>false</skip.unpack>
+        <skip.source>false</skip.source>
+    </properties>
+
+    <modules>
+        <module>AuditRepositoryCore</module>
+        <module>AuditRepositoryEJB</module>
+        <module>ConnectionManagerCore</module>
+        <module>DocRepositoryCore</module>
+        <module>PatientCorrelationCore</module>
+        <module>PolicyEngineCore</module>
+        <module>DocumentQueryCore</module>
+        <module>DocRegistryCore</module>
+        <module>PatientDiscoveryCore</module>
+        <module>DocumentDataSubmissionCore</module>
+        <module>DocumentSubmissionCore</module>
+        <module>CORE_X12DocumentSubmissionCore</module>
+        <module>DocumentRetrieveCore</module>
+        <module>AdminDistributionCore</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>DirectTest</id>
+            <modules>
+                <module>DirectCoreTest</module>
+            </modules>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>Direct</id>
+            <modules>
+                <module>DirectCore</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>

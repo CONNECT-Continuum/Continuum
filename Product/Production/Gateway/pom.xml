@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.connectopensource</groupId>
+        <artifactId>Production</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>Gateway</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <skip.unpack>false</skip.unpack>
+    </properties>
+
+    <modules>
+        <module>AdminDistribution_10</module>
+        <module>AdminDistribution_20</module>
+        <module>DocumentQuery_20</module>
+        <module>DocumentQuery_30</module>
+        <module>DocumentRetrieve_20</module>
+        <module>DocumentRetrieve_30</module>
+        <module>DocumentSubmission_11</module>
+        <module>DocumentSubmission_20</module>
+        <module>PatientDiscovery_10</module>
+        <module>CONNECTGatewayWeb</module>
+        <module>CORE_X12DocumentSubmission_10</module>
+        <module>DocumentDataSubmission_10</module>
+        <module>CONNECTCommonWeb</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>Direct</id>
+            <modules>
+                <module>Direct</module>
+                <module>AdminGUIWebservices</module>
+            </modules>
+        </profile>
+       <profile>
+            <id>admingui</id>
+            <modules>
+                <module>AdminGUIWebservices</module>
+            </modules>
+        </profile>
+    </profiles>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.connectopensource</groupId>
+                <artifactId>ContinuumCoreLib</artifactId>
+                <version>${project.parent.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.owasp.esapi</groupId>
+                        <artifactId>esapi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.connectopensource</groupId>
+                <artifactId>AuditRepositoryCore</artifactId>
+                <version>${project.parent.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

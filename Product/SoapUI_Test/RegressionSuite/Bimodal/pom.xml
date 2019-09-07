@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.connectopensource</groupId>
+        <artifactId>RegressionSuite</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>Bimodal</artifactId>
+    <name>Maven 3 soapUI Bimodal Regression Tests</name>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <soapui.testFailIgnore>true</soapui.testFailIgnore>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>regression-testing</id>
+            <activation>
+                <property>
+                    <name>regression</name>
+                </property>
+            </activation>
+            <modules>
+            <!--    <module>ValidateDQDRMultispecSupportTest</module> -->
+                <module>XDRAdapterTests</module>
+                <module>AdapterPatientDiscoveryAsyncReq</module>
+                <module>AdapterPatientDiscoveryAsyncReqError</module>
+                <module>AdapterPatientDiscoveryAsyncResp</module>
+                <module>AdapterPolicyEngineSAMLConformanceTests</module>
+                <module>AdapterRegistryErrorListMissingTest</module>
+                <module>ValidatePDCountryCodeTest</module>
+                <module>ValidateDQAdapterMultipleEventCodesTest</module>
+                <module>DocRegistryAndRepository</module>
+                <module>DocumentRetrieveXDSErrorValidation</module>
+                <module>ValidatePDCommunicationErrorHandlingTest</module>
+                <module>ExchangeManagerTests</module>
+                <module>ValidateSAMLResourceURIAttributeTest</module>
+                <module>ValidateQDMessageSpecVersionTest</module>
+                <module>ValidateAuditQueryLogService</module>
+                <module>ValidateRDMessageSpecVersionTest</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>

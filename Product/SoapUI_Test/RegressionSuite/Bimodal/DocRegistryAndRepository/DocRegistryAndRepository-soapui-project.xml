@@ -1,0 +1,2388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project abortOnError="false" name="DocRegistryAndRepository" resourceRoot="${projectDir}" runType="SEQUENTIAL" soapui-version="5.3.0" activeEnvironment="Default" id="c42c580c-833f-485d-bb90-a4a76c4125d4" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface anonymous="optional" bindingName="{urn:ihe:iti:xds-b:2007}DocumentRepository_Binding" definition="../../../target/wsdl/AdapterComponentDocRepository.wsdl" name="DocumentRepository_Binding" soapVersion="1_2" type="wsdl" wsaVersion="NONE" xsi:type="con:WsdlInterface" id="ca87465f-3732-4970-897e-5ff782d05efb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:endpoints>
+      <con:endpoint>${#Project#Endpoint-DocRepository}</con:endpoint>
+      <con:endpoint>http://localhost:${NhincHttpPort}/DocumentRepository_Service</con:endpoint>
+      <con:endpoint>http://localhost:${NhincHttpPort}/DocumentRepository_Service_Soap12</con:endpoint>
+    </con:endpoints>
+    <con:operation action="urn:ihe:iti:2007:ProvideAndRegisterDocumentSet-b" anonymous="optional" bindingOperationName="DocumentRepository_ProvideAndRegisterDocumentSet-b" inputName="" isOneWay="false" name="DocumentRepository_ProvideAndRegisterDocumentSet-b" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="a04aef56-987f-4772-8f99-ad102db0c612">
+      <con:settings/>
+    </con:operation>
+    <con:operation action="urn:ihe:iti:2007:RetrieveDocumentSet" anonymous="optional" bindingOperationName="DocumentRepository_RetrieveDocumentSet" inputName="" isOneWay="false" name="DocumentRepository_RetrieveDocumentSet" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="d147ff9c-29d5-458a-84a6-4d7681720772">
+      <con:settings/>
+    </con:operation>
+  </con:interface>
+  <con:interface anonymous="optional" bindingName="{urn:ihe:iti:xds-b:2007}DocumentRegistry_Binding_Soap" definition="../../../target/wsdl/AdapterComponentDocRegistry.wsdl" name="DocumentRegistry_Binding_Soap" soapVersion="1_2" type="wsdl" wsaVersion="NONE" xsi:type="con:WsdlInterface" id="7b369813-73c5-4fb8-81fc-5986ccbb1517" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:endpoints>
+      <con:endpoint>http://localhost:${NhincHttpPort}/DocumentRegistry_Service</con:endpoint>
+      <con:endpoint>http://localhost:8080/DocumentRegistry_Service</con:endpoint>
+    </con:endpoints>
+    <con:operation action="urn:hl7-org:v3:PRPA_IN201301UV02" anonymous="optional" bindingOperationName="DocumentRegistry_PRPA_IN201301UV02" inputName="" isOneWay="false" name="DocumentRegistry_PRPA_IN201301UV02" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="ccc14ec5-8179-4f01-84ed-341a773e6687">
+      <con:settings/>
+    </con:operation>
+    <con:operation action="urn:hl7-org:v3:PRPA_IN201302UV02" anonymous="optional" bindingOperationName="DocumentRegistry_PRPA_IN201302UV02" inputName="" isOneWay="false" name="DocumentRegistry_PRPA_IN201302UV02" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="b9dd18f2-5842-4a99-8a31-50283d5ac74c">
+      <con:settings/>
+    </con:operation>
+    <con:operation action="urn:hl7-org:v3:PRPA_IN201304UV02" anonymous="optional" bindingOperationName="DocumentRegistry_PRPA_IN201304UV02" inputName="" isOneWay="false" name="DocumentRegistry_PRPA_IN201304UV02" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="afc8e92f-ab27-42d7-a77b-41489081e2ab">
+      <con:settings/>
+    </con:operation>
+    <con:operation action="urn:ihe:iti:2007:RegisterDocumentSet-b" anonymous="optional" bindingOperationName="DocumentRegistry_RegisterDocumentSet-b" inputName="" isOneWay="false" name="DocumentRegistry_RegisterDocumentSet-b" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="b3009efe-d137-48bd-acc1-fc99a4c9fc80">
+      <con:settings/>
+    </con:operation>
+    <con:operation action="urn:ihe:iti:2007:RegistryStoredQuery" anonymous="optional" bindingOperationName="DocumentRegistry_RegistryStoredQuery" inputName="" isOneWay="false" name="DocumentRegistry_RegistryStoredQuery" receivesAttachments="false" sendsAttachments="false" type="Request-Response" id="f1d5aed1-aa5e-4181-949d-2b473c4cec19">
+      <con:settings/>
+    </con:operation>
+  </con:interface>
+  <con:testSuite name="DocRegistryAndRepositoryTestSuite" id="78ef7b51-1e85-430f-80a0-3f3d61bd8bbe">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" id="9d80b1e8-99ee-4450-9a35-c14f094caca9" keepSession="false" maxResults="0" name="ProvideAndRegisterTest" searchProperties="true">
+      <con:settings/>
+      <con:testStep name="Clear Document" type="groovy" id="8e2e13d6-7637-4739-b2d6-95c0f83eaecd">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal')
+
+  def table1 = context.findProperty('EventCodeTable')
+  
+ 
+  sql.execute('delete from ' + table1)
+  sql.execute("delete from " + table + " where DocumentUniqueId like 'CONNECT%'")
+}</script></con:config>
+      </con:testStep>
+      <con:testStep name="Store Document" type="request" id="4831dfc4-1edc-44de-a4c6-abc953001b23">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRepository_Binding</con:interface>
+          <con:operation>DocumentRepository_ProvideAndRegisterDocumentSet-b</con:operation>
+          <con:request name="Store Document" id="d0f44804-a29c-4df1-a431-344d49526e26">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRepository}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="ProvideAndRegisterTest">
+      <xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb="urn:ihe:iti:xds-b:2007">
+         <lcm:SubmitObjectsRequest xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0">
+            <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+               <rim:ExtrinsicObject home="urn:oid:1.1" id="Document01" isOpaque="false" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1">
+                  <rim:Slot name="creationTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627134924</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="intendedRecipient">
+                     <rim:ValueList>
+                        <rim:Value>Agilex Technologies|Scott Borst</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="languageCode">
+                     <rim:ValueList>
+                        <rim:Value>en-US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="legalAuthenticator">
+                     <rim:ValueList>
+                        <rim:Value>legal authenticator for a consent document</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStartTime">
+                     <rim:ValueList>
+                        <rim:Value>20070911000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStopTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientId">
+                     <rim:ValueList>
+                        <rim:Value>500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientInfo">
+                     <rim:ValueList>
+                        <rim:Value>PID-3|pid1^^^domain</rim:Value>
+                        <rim:Value>PID-5|Schnur^Anna^^^</rim:Value>
+                        <rim:Value>PID-7|19560813</rim:Value>
+                        <rim:Value>PID-8|F</rim:Value>
+                        <rim:Value>PID-11|312 HILL ROAD^^HILLSBORO^MO^37660^US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="ProvideAndRegisterTestDocument"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent document 1 Schnur VA comments"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d" classifiedObject="Document01" id="" nodeRepresentation="">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a" classifiedObject="Document01" id="" nodeRepresentation="XNHIN-CONSENT">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="NHIN Consent Document"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f" classifiedObject="Document01" id="" nodeRepresentation="R">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.5.25</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Restricted"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d" classifiedObject="Document01" id="" nodeRepresentation="CDAR2/IHE 1.0">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon formatCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="CDAR2/IHE 1.0"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1" classifiedObject="Document01" id="" nodeRepresentation="Outpatient">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon healthcareFacilityTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Outpatient"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead" classifiedObject="Document01" id="" nodeRepresentation="394802001">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.96</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="General Medicine"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983" classifiedObject="Document01" id="" nodeRepresentation="34133-9">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>LOINC</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Summarization of Episode Note"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4" classifiedObject="Document01" nodeRepresentation="ProvideAndRegisterTestEventCodeValue">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>EventCodeSchemeValue</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="EventCode"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" registryObject="Document01" value="2.1.11111.1.1">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" registryObject="Document01" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:ExtrinsicObject>
+               <rim:RegistryPackage id="SubmissionSet01" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                  <rim:Slot name="submissionTime">
+                     <rim:ValueList>
+                        <rim:Value>200905211223</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="Consent SubmissionSet1 Name"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent SubmissionSet1"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:a7058bb9-b4e4-4307-ba5b-e3f0ab85e12d" classifiedObject="SubmissionSet01" nodeRepresentation="" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_20">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500" classifiedObject="SubmissionSet01" nodeRepresentation="History and Physical" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_21">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon contentTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="History and Physical"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8" value="2.1.11111.1.2" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_22" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832" value="129.6.58.92.1.1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_23" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_24" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:RegistryPackage>
+               <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" sourceObject="SubmissionSet01" targetObject="Document01" id="ID_25276323_1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">
+                  <rim:Slot name="SubmissionSetStatus">
+                     <rim:ValueList>
+                        <rim:Value>Original</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+               </rim:Association>
+               <rim:Classification classifiedObject="SubmissionSet01" classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd" id="ID_25276323_3" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+            </rim:RegistryObjectList>
+         </lcm:SubmitObjectsRequest>
+         <xdsb:Document id="Document01">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxQb2xpY3kgeG1sbnM9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoyLjA6cG9saWN5OnNjaGVtYTpvcyIgeG1sbnM6bmhpbj0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4iIHBvbGljeWlkPSIxMjM0NTY3OC0xMjM0LTEyMzQtMTIzNC0xMjM0NTY3ODlhYmMiIHJ1bGVjb21iaW5pbmdhbGdpZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjEuMDpydWxlLWNvbWJpbmluZy1hbGdvcml0aG06Zmlyc3QtYXBwbGljYWJsZSI+DQoJPERlc2NyaXB0aW9uPlNhbXBsZSBYQUNNTCBwb2xpY3kgc2hvd2luZyBhY2Nlc3MgYnkgdXNlciByb2xlPC9EZXNjcmlwdGlvbj4NCgk8VGFyZ2V0Pg0KCQk8QWN0aW9ucz4NCgkJCTxBY3Rpb24+DQoJCQkJPEFjdGlvbk1hdGNoIE1hdGNoSWQ9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoxLjA6ZnVuY3Rpb246c3RyaW5nLWVxdWFsIj4NCgkJCQkJPEF0dHJpYnV0ZVZhbHVlIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiPmh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI3JldHJpZXZlRG9jdW1lbnQ8L0F0dHJpYnV0ZVZhbHVlPg0KCQkJCQk8QWN0aW9uQXR0cmlidXRlRGVzaWduYXRvciBBdHRyaWJ1dGVJZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjIuMDphY3Rpb24iIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiLz4NCgkJCQk8L0FjdGlvbk1hdGNoPg0KCQkJPC9BY3Rpb24+DQoJCTwvQWN0aW9ucz4NCgk8L1RhcmdldD4NCgk8RW52aXJvbm1lbnRzPg0KCQk8RW52aXJvbm1lbnQ+DQoJCQk8RW52aXJvbm1lbnRNYXRjaCBNYXRjaElkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbi9mdW5jdGlvbiNpbnN0YW5jZS1pZGVudGlmaWVyLWVxdWFsIj4NCgkJCQk8QXR0cmlidXRlVmFsdWUgRGF0YVR5cGU9Imh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI2luc3RhbmNlLWlkZW50aXRpZmVyIj4NCgkJCQkJPFBhdGllbnRJZCBFeHRlbnNpb249IjUwMDAwMDAwMSIgUm9vdD0iMS4xIi8+DQoJCQkJPC9BdHRyaWJ1dGVWYWx1ZT4NCgkJCQk8RW52aXJvbm1lbnRBdHRyaWJ1dGVEZXNpZ25hdG9yIEF0dHJpYnV0ZUlkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbiNzdWJqZWN0LWlkIiBEYXRhVHlwZT0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4jaW5zdGFuY2UtaWRlbnRpdGlmZXIiLz4NCgkJCTwvRW52aXJvbm1lbnRNYXRjaD4NCgkJPC9FbnZpcm9ubWVudD4NCgk8L0Vudmlyb25tZW50cz4NCgk8UnVsZSBFZmZlY3Q9IlBlcm1pdCIgUnVsZUlkPSIxMjYiPg0KCQk8RGVzY3JpcHRpb24+cGVybWl0IGFsbCBhY2Nlc3MgdG8gZG9jdW1lbnRzLjwvRGVzY3JpcHRpb24+DQoJCTxUYXJnZXQvPg0KCTwvUnVsZT4NCjwvUG9saWN5Pg0K</xdsb:Document>
+      </xdsb:ProvideAndRegisterDocumentSetRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="9781360a-8552-4e7d-b3bf-48f212d10b5e"/>
+            <con:assertion type="Schema Compliance" id="43e4cda7-31f6-4590-bf8a-1e5541450e41">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="bf4ea04a-f2ea-4a99-85e8-2343d1518da6"/>
+            <con:assertion type="XPath Match" id="a5e12695-4194-4bf8-a693-93ec0f87c2e0">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0';
+//ns2:RegistryResponse[1]/@status</path>
+                <content>urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="Delete Document" type="groovy" id="c63cdcb9-31f8-4b65-8072-4cf2b3836df1">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+  def val1 = context.findProperty('EventVal')
+
+  sql.execute('delete from ' + table1 + ' where ' + col1 + ' = ' + val1)
+  sql.execute("delete from docrepository where DocumentUniqueId like (select DocumentUniqueId from " + table + " where " + col + " = " + val +")" )
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+  
+  
+}</script></con:config>
+      </con:testStep>
+      <con:setupScript>nhinc.FileUtils.backupConfiguration(context.findProperty("GatewayPropDir"), log);</con:setupScript>
+      <con:properties>
+        <con:property>
+          <con:name>startDate</con:name>
+          <con:value>2018-05-25T18:26:57Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>endDate</con:name>
+          <con:value>2018-05-25T18:36:57Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>sigDate</con:name>
+          <con:value>05/25/2018 18:26:57</con:value>
+        </con:property>
+        <con:property>
+          <con:name>expireDate</con:name>
+          <con:value>2018-06-24T00:00:00Z</con:value>
+        </con:property>
+      </con:properties>
+      <con:reportParameters/>
+      <con:tearDownScript>nhinc.FileUtils.restoreConfiguration(context.findProperty("GatewayPropDir"), log);</con:tearDownScript>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" id="276bc324-fade-4c00-a205-45dd1d24092a" keepSession="false" maxResults="0" name="DocumentQueryTest" searchProperties="true">
+      <con:settings/>
+      <con:testStep name="Clear Documents" type="groovy" id="b1e55f81-e288-4489-805f-3fa3e1798010">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+
+  sql.execute('delete from ' + table1 + ' where true')
+  sql.execute("delete from " + table + " where " + col + " like 'CONNECT%'")
+}</script></con:config>
+      </con:testStep>
+      <con:testStep name="Store Document" type="request" id="ea116e09-ddb1-488e-b051-f866821e5f9b">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRepository_Binding</con:interface>
+          <con:operation>DocumentRepository_ProvideAndRegisterDocumentSet-b</con:operation>
+          <con:request name="Store Document" id="9713d493-ecf2-4fe5-8140-8611d5db2904">
+            <con:settings/>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRepository}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb="urn:ihe:iti:xds-b:2007">
+         <lcm:SubmitObjectsRequest xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0">
+            <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+               <rim:ExtrinsicObject home="urn:oid:1.1" id="Document01" isOpaque="false" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1">
+                  <rim:Slot name="creationTime">
+                     <rim:ValueList>
+                        <!-- <rim:Value>2008-06-27 13:49:24</rim:Value> -->
+                        <rim:Value>20080627134924</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="intendedRecipient">
+                     <rim:ValueList>
+                        <rim:Value>Agilex Technologies|Scott Borst</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="languageCode">
+                     <rim:ValueList>
+                        <rim:Value>en-US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="legalAuthenticator">
+                     <rim:ValueList>
+                        <rim:Value>legal authenticator for a consent document</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStartTime">
+                     <rim:ValueList>
+                        <rim:Value>20070911000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStopTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientId">
+                     <rim:ValueList>
+                        <rim:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientInfo">
+                     <rim:ValueList>
+                        <rim:Value>PID-3|pid1^^^domain</rim:Value>
+                        <rim:Value>PID-5|Schnur^Anna^^^</rim:Value>
+                        <rim:Value>PID-7|19560813</rim:Value>
+                        <rim:Value>PID-8|F</rim:Value>
+                        <rim:Value>PID-11|312 HILL ROAD^^HILLSBORO^MO^37660^US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="DocQueryTestDocument"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent document 1 Schnur VA comments"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d" classifiedObject="Document01" id="" nodeRepresentation="">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a" classifiedObject="Document01" id="" nodeRepresentation="XNHIN-CONSENT">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="NHIN Consent Document"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f" classifiedObject="Document01" id="" nodeRepresentation="R">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.5.25</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Restricted"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d" classifiedObject="Document01" id="" nodeRepresentation="CDAR2/IHE 1.0">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon formatCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="CDAR2/IHE 1.0"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1" classifiedObject="Document01" id="" nodeRepresentation="Outpatient">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon healthcareFacilityTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Outpatient"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead" classifiedObject="Document01" id="" nodeRepresentation="394802001">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.96</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="General Medicine"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983" classifiedObject="Document01" id="" nodeRepresentation="34133-9">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>LOINC</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Summarization of Episode Note"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4" classifiedObject="Document01" nodeRepresentation="T-32000">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>SNM3</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="EventCode"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" registryObject="Document01" value="2.1.11111.1.1">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" registryObject="Document01" value="12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:ExtrinsicObject>
+               <rim:RegistryPackage id="SubmissionSet01" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                  <rim:Slot name="submissionTime">
+                     <rim:ValueList>
+                        <rim:Value>200905211223</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="Consent SubmissionSet1 Name"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent SubmissionSet1"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:a7058bb9-b4e4-4307-ba5b-e3f0ab85e12d" classifiedObject="SubmissionSet01" nodeRepresentation="" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_20">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500" classifiedObject="SubmissionSet01" nodeRepresentation="History and Physical" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_21">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon contentTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="History and Physical"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8" value="2.1.11111.1.2" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_22" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832" value="129.6.58.92.1.1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_23" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_24" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:RegistryPackage>
+               <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" sourceObject="SubmissionSet01" targetObject="Document01" id="ID_25276323_1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">
+                  <rim:Slot name="SubmissionSetStatus">
+                     <rim:ValueList>
+                        <rim:Value>Original</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+               </rim:Association>
+               <rim:Classification classifiedObject="SubmissionSet01" classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd" id="ID_25276323_3" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+            </rim:RegistryObjectList>
+         </lcm:SubmitObjectsRequest>
+         <xdsb:Document id="Document01">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxQb2xpY3kgeG1sbnM9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoyLjA6cG9saWN5OnNjaGVtYTpvcyIgeG1sbnM6bmhpbj0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4iIHBvbGljeWlkPSIxMjM0NTY3OC0xMjM0LTEyMzQtMTIzNC0xMjM0NTY3ODlhYmMiIHJ1bGVjb21iaW5pbmdhbGdpZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjEuMDpydWxlLWNvbWJpbmluZy1hbGdvcml0aG06Zmlyc3QtYXBwbGljYWJsZSI+DQoJPERlc2NyaXB0aW9uPlNhbXBsZSBYQUNNTCBwb2xpY3kgc2hvd2luZyBhY2Nlc3MgYnkgdXNlciByb2xlPC9EZXNjcmlwdGlvbj4NCgk8VGFyZ2V0Pg0KCQk8QWN0aW9ucz4NCgkJCTxBY3Rpb24+DQoJCQkJPEFjdGlvbk1hdGNoIE1hdGNoSWQ9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoxLjA6ZnVuY3Rpb246c3RyaW5nLWVxdWFsIj4NCgkJCQkJPEF0dHJpYnV0ZVZhbHVlIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiPmh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI3JldHJpZXZlRG9jdW1lbnQ8L0F0dHJpYnV0ZVZhbHVlPg0KCQkJCQk8QWN0aW9uQXR0cmlidXRlRGVzaWduYXRvciBBdHRyaWJ1dGVJZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjIuMDphY3Rpb24iIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiLz4NCgkJCQk8L0FjdGlvbk1hdGNoPg0KCQkJPC9BY3Rpb24+DQoJCTwvQWN0aW9ucz4NCgk8L1RhcmdldD4NCgk8RW52aXJvbm1lbnRzPg0KCQk8RW52aXJvbm1lbnQ+DQoJCQk8RW52aXJvbm1lbnRNYXRjaCBNYXRjaElkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbi9mdW5jdGlvbiNpbnN0YW5jZS1pZGVudGlmaWVyLWVxdWFsIj4NCgkJCQk8QXR0cmlidXRlVmFsdWUgRGF0YVR5cGU9Imh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI2luc3RhbmNlLWlkZW50aXRpZmVyIj4NCgkJCQkJPFBhdGllbnRJZCBFeHRlbnNpb249IjUwMDAwMDAwMSIgUm9vdD0iMS4xIi8+DQoJCQkJPC9BdHRyaWJ1dGVWYWx1ZT4NCgkJCQk8RW52aXJvbm1lbnRBdHRyaWJ1dGVEZXNpZ25hdG9yIEF0dHJpYnV0ZUlkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbiNzdWJqZWN0LWlkIiBEYXRhVHlwZT0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4jaW5zdGFuY2UtaWRlbnRpdGlmZXIiLz4NCgkJCTwvRW52aXJvbm1lbnRNYXRjaD4NCgkJPC9FbnZpcm9ubWVudD4NCgk8L0Vudmlyb25tZW50cz4NCgk8UnVsZSBFZmZlY3Q9IlBlcm1pdCIgUnVsZUlkPSIxMjYiPg0KCQk8RGVzY3JpcHRpb24+cGVybWl0IGFsbCBhY2Nlc3MgdG8gZG9jdW1lbnRzLjwvRGVzY3JpcHRpb24+DQoJCTxUYXJnZXQvPg0KCTwvUnVsZT4NCjwvUG9saWN5Pg0K</xdsb:Document>
+      </xdsb:ProvideAndRegisterDocumentSetRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="988dd9c8-2c5e-462e-b5c4-99af4ef55df0"/>
+            <con:assertion type="Schema Compliance" id="b45efcd4-3969-42c5-9e63-cf9c6c80dc21">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="9d38608a-5116-4b6a-b43f-a04c791ebd9b"/>
+            <con:assertion type="XPath Match" id="d8c46b13-ab52-41c7-b125-e901a78b6d96">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0';
+//ns2:RegistryResponse[1]/@status</path>
+                <content>urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByPatientId" type="request" id="fde2e235-100e-46f2-a49b-567c22773722">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByPatientId" id="cbbeafb7-47ee-47c8-8148-65769085c8e7">
+            <con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="a8537104-6038-4a46-8c4e-f2e4603f3254"/>
+            <con:assertion type="Schema Compliance" id="8fcbac86-5756-48bc-86ac-0d309e7884ac">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="a1c7cccb-1f7c-47f0-93d4-7bae45d14041"/>
+            <con:assertion type="XPath Match" id="c84e6675-8572-4f67-9e6e-6b037d1f36d6">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>CONNECT0</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="f3cf2202-44df-4cf3-a074-f7fe7ca1e3cc">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByDocUniqueId" type="request" id="f30d5274-0e85-44c3-9452-ce837e2f78c7">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByDocUniqueId" id="912fd410-e196-4764-826d-e73ad21bfaea">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryUniqueId">
+               <urn1:ValueList>
+                  <urn1:Value>CONNECT0</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="fc4d21da-8ed1-4e9e-bd8b-fc17b6228d38"/>
+            <con:assertion type="Schema Compliance" id="25b463d3-8c30-4db9-89c8-8aa3e782dac7">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="9d7edd35-9ebd-429e-b134-275c5cbb77b2"/>
+            <con:assertion type="XPath Match" id="e06fca0b-265c-4f41-95cc-cc2d1ecd7bd7">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>CONNECT0</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="38bbdb9b-66da-425f-9f28-a53d98630489">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="62beb4f8-1fdc-43c3-83cf-9b248420d985">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="5a06a910-000d-4577-8e85-e9fb5e1fed48">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="d9ca38a0-22a1-4f04-abd7-7cd3c53bcd61">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByEventCode" type="request" id="8b7fdca7-ac31-4345-ab20-6fee3e7347b3">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByEventCode" id="949fb20b-367b-4b4d-b582-0dca9f57bca2">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryEventCodeList">
+               <urn1:ValueList>
+                  <urn1:Value>('T-32000^^SNM3')</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="f481c51b-c4dc-4386-8985-a60c1dad04ef"/>
+            <con:assertion type="Schema Compliance" id="c365e132-b595-4a20-a83c-f18980d216e6">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="d576a2e5-c101-45d0-bd62-7d29fa71b570"/>
+            <con:assertion type="XPath Match" id="8228fb14-7e74-4dee-b602-9a1754999aab">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>CONNECT0</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="266782e0-cba4-49e9-9ad5-95baaf5bfc86">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="38544ef3-f154-4a85-851d-bd1baac9750c">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="e2165114-bf02-4db9-9ea9-eb9557527e7d">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="2884e2f1-1b5d-452b-a245-e772ec9cd3b1">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByEventCodeScheme" type="request" disabled="true" id="75f2969e-f41d-4196-8172-78ff5dd0d3c5">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByEventCodeScheme" id="a19e10a2-840b-4a3c-9013-9663627371cf">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryEventCodeList">
+               <urn1:ValueList>
+                  <urn1:Value>('T-32000^^SNM3')</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="a8b4ef94-6b86-4155-931a-a0cf205cbc1c"/>
+            <con:assertion type="Schema Compliance" id="3b8b91ad-e26f-49cd-a276-f093271e380b">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="c933e87a-6ccb-4624-9f70-695be1eb2724"/>
+            <con:assertion type="XPath Match" id="0ffbd7ec-1ef6-45b6-93a7-bd1fe6709f8e">
+              <con:configuration>
+                <path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:ExternalIdentifier[1]/@value}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="5af66c0c-08e3-4459-a090-fae5886d4cd9">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="4b66b286-7752-4f1a-a8be-31f637a73395">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="fe3047e9-da69-47f4-b851-588035381f6d">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="3cecf081-338e-4414-a2ad-1edba444fbef">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryNoResults" type="request" id="98e14bcf-57e6-4188-a0e9-061f2ef0e9a4">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryNoResults" id="cff879fc-849b-4228-bf5c-d04913b2282b">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>boguspatientid^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="b6eb0dde-7adb-4ee4-b00a-c4450808ec69"/>
+            <con:assertion type="Schema Compliance" id="74093cc1-d3d6-46ad-b77d-dc789218a6d9">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="256056ce-aaa8-44de-85b7-3f35579f7db2"/>
+            <con:assertion name="Result count of 0" type="XPath Match" id="56eb3b15-1470-41cd-98f4-1e57d64d47be">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>0</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="Delete Document" type="groovy" id="e8783308-52e2-4cec-a77d-e5a475bece7a">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal1')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+  def col2 = context.findProperty('EventCol1')
+  def val1 = context.findProperty('EventVal')
+  def val2 = context.findProperty('EventVal2');
+
+  sql.execute('delete from ' + table1 + ' where ' + col1 + ' = ' + val1 )
+  sql.execute("delete from docrepository where DocumentUniqueId  like 'CONNECT%'" )
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+}</script></con:config>
+      </con:testStep>
+      <con:setupScript>nhinc.FileUtils.backupConfiguration(context.findProperty("GatewayPropDir"), log);</con:setupScript>
+      <con:properties>
+        <con:property>
+          <con:name>startDate</con:name>
+          <con:value>2018-05-25T18:26:59Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>endDate</con:name>
+          <con:value>2018-05-25T18:36:59Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>sigDate</con:name>
+          <con:value>05/25/2018 18:26:59</con:value>
+        </con:property>
+        <con:property>
+          <con:name>expireDate</con:name>
+          <con:value>2018-06-24T00:00:00Z</con:value>
+        </con:property>
+      </con:properties>
+      <con:reportParameters/>
+      <con:tearDownScript>nhinc.FileUtils.restoreConfiguration(context.findProperty("GatewayPropDir"), log);</con:tearDownScript>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite name="DocRegistryAndRepositoryTestSuite - Passthrough" id="9a240d9e-ae13-457d-bd96-963f440d86ff">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ProvideAndRegisterTest" searchProperties="true" id="6aa80d2e-ab4a-4550-b12e-ada0d6eaee62">
+      <con:settings/>
+      <con:testStep name="Clear Document" type="groovy" id="71213ae8-e00e-46c7-be48-b2299144b5ab">
+        <con:settings/>
+        <con:config>
+          <script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal')
+
+  def table1 = context.findProperty('EventCodeTable')
+  
+ 
+  sql.execute('delete from ' + table1)
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+}</script>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="Store Document" type="request" id="8fc23ae5-1e07-41b5-819a-3998de697dc4">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRepository_Binding</con:interface>
+          <con:operation>DocumentRepository_ProvideAndRegisterDocumentSet-b</con:operation>
+          <con:request name="Store Document" id="779fccda-6bc4-4f38-97ab-bf94765c5711">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRepository}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="ProvideAndRegisterTest">
+      <xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb="urn:ihe:iti:xds-b:2007">
+         <lcm:SubmitObjectsRequest xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0">
+            <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+               <rim:ExtrinsicObject home="urn:oid:1.1" id="Document01" isOpaque="false" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1">
+                  <rim:Slot name="creationTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627134924</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="intendedRecipient">
+                     <rim:ValueList>
+                        <rim:Value>Agilex Technologies|Scott Borst</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="languageCode">
+                     <rim:ValueList>
+                        <rim:Value>en-US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="legalAuthenticator">
+                     <rim:ValueList>
+                        <rim:Value>legal authenticator for a consent document</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStartTime">
+                     <rim:ValueList>
+                        <rim:Value>20070911000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStopTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientId">
+                     <rim:ValueList>
+                        <rim:Value>500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientInfo">
+                     <rim:ValueList>
+                        <rim:Value>PID-3|pid1^^^domain</rim:Value>
+                        <rim:Value>PID-5|Schnur^Anna^^^</rim:Value>
+                        <rim:Value>PID-7|19560813</rim:Value>
+                        <rim:Value>PID-8|F</rim:Value>
+                        <rim:Value>PID-11|312 HILL ROAD^^HILLSBORO^MO^37660^US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="ProvideAndRegisterTestDocument"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent document 1 Schnur VA comments"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d" classifiedObject="Document01" id="" nodeRepresentation="">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a" classifiedObject="Document01" id="" nodeRepresentation="XNHIN-CONSENT">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="NHIN Consent Document"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f" classifiedObject="Document01" id="" nodeRepresentation="R">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.5.25</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Restricted"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d" classifiedObject="Document01" id="" nodeRepresentation="CDAR2/IHE 1.0">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon formatCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="CDAR2/IHE 1.0"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1" classifiedObject="Document01" id="" nodeRepresentation="Outpatient">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon healthcareFacilityTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Outpatient"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead" classifiedObject="Document01" id="" nodeRepresentation="394802001">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.96</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="General Medicine"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983" classifiedObject="Document01" id="" nodeRepresentation="34133-9">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>LOINC</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Summarization of Episode Note"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4" classifiedObject="Document01" nodeRepresentation="ProvideAndRegisterTestEventCodeValue">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>EventCodeSchemeValue</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="EventCode"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" registryObject="Document01" value="2.1.11111.1.1">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" registryObject="Document01" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:ExtrinsicObject>
+               <rim:RegistryPackage id="SubmissionSet01" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                  <rim:Slot name="submissionTime">
+                     <rim:ValueList>
+                        <rim:Value>200905211223</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="Consent SubmissionSet1 Name"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent SubmissionSet1"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:a7058bb9-b4e4-4307-ba5b-e3f0ab85e12d" classifiedObject="SubmissionSet01" nodeRepresentation="" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_20">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500" classifiedObject="SubmissionSet01" nodeRepresentation="History and Physical" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_21">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon contentTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="History and Physical"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8" value="2.1.11111.1.2" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_22" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832" value="129.6.58.92.1.1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_23" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_24" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:RegistryPackage>
+               <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" sourceObject="SubmissionSet01" targetObject="Document01" id="ID_25276323_1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">
+                  <rim:Slot name="SubmissionSetStatus">
+                     <rim:ValueList>
+                        <rim:Value>Original</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+               </rim:Association>
+               <rim:Classification classifiedObject="SubmissionSet01" classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd" id="ID_25276323_3" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+            </rim:RegistryObjectList>
+         </lcm:SubmitObjectsRequest>
+         <xdsb:Document id="Document01">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxQb2xpY3kgeG1sbnM9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoyLjA6cG9saWN5OnNjaGVtYTpvcyIgeG1sbnM6bmhpbj0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4iIHBvbGljeWlkPSIxMjM0NTY3OC0xMjM0LTEyMzQtMTIzNC0xMjM0NTY3ODlhYmMiIHJ1bGVjb21iaW5pbmdhbGdpZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjEuMDpydWxlLWNvbWJpbmluZy1hbGdvcml0aG06Zmlyc3QtYXBwbGljYWJsZSI+DQoJPERlc2NyaXB0aW9uPlNhbXBsZSBYQUNNTCBwb2xpY3kgc2hvd2luZyBhY2Nlc3MgYnkgdXNlciByb2xlPC9EZXNjcmlwdGlvbj4NCgk8VGFyZ2V0Pg0KCQk8QWN0aW9ucz4NCgkJCTxBY3Rpb24+DQoJCQkJPEFjdGlvbk1hdGNoIE1hdGNoSWQ9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoxLjA6ZnVuY3Rpb246c3RyaW5nLWVxdWFsIj4NCgkJCQkJPEF0dHJpYnV0ZVZhbHVlIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiPmh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI3JldHJpZXZlRG9jdW1lbnQ8L0F0dHJpYnV0ZVZhbHVlPg0KCQkJCQk8QWN0aW9uQXR0cmlidXRlRGVzaWduYXRvciBBdHRyaWJ1dGVJZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjIuMDphY3Rpb24iIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiLz4NCgkJCQk8L0FjdGlvbk1hdGNoPg0KCQkJPC9BY3Rpb24+DQoJCTwvQWN0aW9ucz4NCgk8L1RhcmdldD4NCgk8RW52aXJvbm1lbnRzPg0KCQk8RW52aXJvbm1lbnQ+DQoJCQk8RW52aXJvbm1lbnRNYXRjaCBNYXRjaElkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbi9mdW5jdGlvbiNpbnN0YW5jZS1pZGVudGlmaWVyLWVxdWFsIj4NCgkJCQk8QXR0cmlidXRlVmFsdWUgRGF0YVR5cGU9Imh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI2luc3RhbmNlLWlkZW50aXRpZmVyIj4NCgkJCQkJPFBhdGllbnRJZCBFeHRlbnNpb249IjUwMDAwMDAwMSIgUm9vdD0iMS4xIi8+DQoJCQkJPC9BdHRyaWJ1dGVWYWx1ZT4NCgkJCQk8RW52aXJvbm1lbnRBdHRyaWJ1dGVEZXNpZ25hdG9yIEF0dHJpYnV0ZUlkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbiNzdWJqZWN0LWlkIiBEYXRhVHlwZT0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4jaW5zdGFuY2UtaWRlbnRpdGlmZXIiLz4NCgkJCTwvRW52aXJvbm1lbnRNYXRjaD4NCgkJPC9FbnZpcm9ubWVudD4NCgk8L0Vudmlyb25tZW50cz4NCgk8UnVsZSBFZmZlY3Q9IlBlcm1pdCIgUnVsZUlkPSIxMjYiPg0KCQk8RGVzY3JpcHRpb24+cGVybWl0IGFsbCBhY2Nlc3MgdG8gZG9jdW1lbnRzLjwvRGVzY3JpcHRpb24+DQoJCTxUYXJnZXQvPg0KCTwvUnVsZT4NCjwvUG9saWN5Pg0K</xdsb:Document>
+      </xdsb:ProvideAndRegisterDocumentSetRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="d7aa0406-8c2b-4b3c-839c-edc3544bd61e"/>
+            <con:assertion type="Schema Compliance" id="4a4819e3-41d3-48a4-b853-46ccb9d82bf0">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="89439292-a312-4978-b74a-f39f79c3805f"/>
+            <con:assertion type="XPath Match" id="aa41c66e-dc64-469d-bc16-982306327b36">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0';
+//ns2:RegistryResponse[1]/@status</path>
+                <content>urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="Delete Document" type="groovy" id="a1ce91d6-ba73-4d2d-bd33-27b0d062429c">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+  def val1 = context.findProperty('EventVal')
+
+  sql.execute('delete from ' + table1 + ' where ' + col1 + ' = ' + val1)
+  sql.execute("delete from docrepository where DocumentUniqueId like (select DocumentUniqueId from " + table + " where " + col + " = " + val +")" )
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+}</script></con:config>
+      </con:testStep>
+      <con:setupScript>nhinc.FileUtils.backupConfiguration(context.findProperty("GatewayPropDir"), log);
+context.setGatewayStandard(false);</con:setupScript>
+      <con:properties>
+        <con:property>
+          <con:name>startDate</con:name>
+          <con:value>2018-05-25T18:27:01Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>endDate</con:name>
+          <con:value>2018-05-25T18:37:01Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>sigDate</con:name>
+          <con:value>05/25/2018 18:27:01</con:value>
+        </con:property>
+        <con:property>
+          <con:name>expireDate</con:name>
+          <con:value>2018-06-24T00:00:00Z</con:value>
+        </con:property>
+      </con:properties>
+      <con:reportParameters/>
+      <con:tearDownScript>nhinc.FileUtils.restoreConfiguration(context.findProperty("GatewayPropDir"), log);
+context.setGatewayStandard(true);</con:tearDownScript>
+    </con:testCase>
+    <con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="DocumentQueryTest" searchProperties="true" id="a5eb4c51-6e96-4753-a3d2-407f60eb7c20">
+      <con:settings/>
+      <con:testStep name="Clear Documents" type="groovy" id="105339c6-0896-4c52-a1cb-74e1c13cdc2d">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal1')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+  def val1 = context.findProperty('EventVal1')
+
+  sql.execute('delete from ' + table1 + ' where ' + col1 + ' = ' + val1 )
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+  sql.execute("delete from " + table + " where DocumentUniqueId like 'CONNECT%'")
+  sql.execute("delete from eventcode")
+}</script></con:config>
+      </con:testStep>
+      <con:testStep name="Store Document" type="request" id="c1641204-cfdf-419c-8b70-dcc5d9c8a523">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRepository_Binding</con:interface>
+          <con:operation>DocumentRepository_ProvideAndRegisterDocumentSet-b</con:operation>
+          <con:request name="Store Document" id="f493742c-4301-40b3-b2cc-dc64b69579f8">
+            <con:settings/>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRepository}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <xdsb:ProvideAndRegisterDocumentSetRequest xmlns:xdsb="urn:ihe:iti:xds-b:2007">
+         <lcm:SubmitObjectsRequest xmlns:lcm="urn:oasis:names:tc:ebxml-regrep:xsd:lcm:3.0">
+            <rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+               <rim:ExtrinsicObject home="urn:oid:1.1" id="Document01" isOpaque="false" mimeType="text/xml" objectType="urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1">
+                  <rim:Slot name="creationTime">
+                     <rim:ValueList>
+                        <!-- <rim:Value>2008-06-27 13:49:24</rim:Value> -->
+                        <rim:Value>20080627134924</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="intendedRecipient">
+                     <rim:ValueList>
+                        <rim:Value>Agilex Technologies|Scott Borst</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="languageCode">
+                     <rim:ValueList>
+                        <rim:Value>en-US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="legalAuthenticator">
+                     <rim:ValueList>
+                        <rim:Value>legal authenticator for a consent document</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStartTime">
+                     <rim:ValueList>
+                        <rim:Value>20070911000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="serviceStopTime">
+                     <rim:ValueList>
+                        <rim:Value>20080627000000</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientId">
+                     <rim:ValueList>
+                        <rim:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Slot name="sourcePatientInfo">
+                     <rim:ValueList>
+                        <rim:Value>PID-3|pid1^^^domain</rim:Value>
+                        <rim:Value>PID-5|Schnur^Anna^^^</rim:Value>
+                        <rim:Value>PID-7|19560813</rim:Value>
+                        <rim:Value>PID-8|F</rim:Value>
+                        <rim:Value>PID-11|312 HILL ROAD^^HILLSBORO^MO^37660^US</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="DocQueryTestDocument"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent document 1 Schnur VA comments"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:93606bcf-9494-43ec-9b4e-a7748d1a838d" classifiedObject="Document01" id="" nodeRepresentation="">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:41a5887f-8865-4c09-adf7-e362475b143a" classifiedObject="Document01" id="" nodeRepresentation="XNHIN-CONSENT">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.1</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="NHIN Consent Document"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f4f85eac-e6cb-4883-b524-f2705394840f" classifiedObject="Document01" id="" nodeRepresentation="R">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.5.25</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Restricted"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:a09d5840-386c-46f2-b5ad-9c3699a4309d" classifiedObject="Document01" id="" nodeRepresentation="CDAR2/IHE 1.0">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon formatCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="CDAR2/IHE 1.0"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f33fb8ac-18af-42cc-ae0e-ed0b0bdb91e1" classifiedObject="Document01" id="" nodeRepresentation="Outpatient">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon healthcareFacilityTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Outpatient"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:cccf5598-8b07-4b77-a05e-ae952c785ead" classifiedObject="Document01" id="" nodeRepresentation="394802001">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>2.16.840.1.113883.6.96</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="General Medicine"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:f0306f51-975f-434e-a61c-c59651d33983" classifiedObject="Document01" id="" nodeRepresentation="34133-9">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>LOINC</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="Summarization of Episode Note"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:2c6b8cb7-8b2a-4051-b291-b1ae6a575ef4" classifiedObject="Document01" nodeRepresentation="T-32000">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>SNM3</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="EventCode"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:2e82c1f6-a085-4c72-9da3-8640a32e42ab" registryObject="Document01" value="2.1.11111.1.1">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier id="" identificationScheme="urn:uuid:58a6f841-87b3-4a3e-92fd-a8ffeff98427" registryObject="Document01" value="12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSDocumentEntry.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:ExtrinsicObject>
+               <rim:RegistryPackage id="SubmissionSet01" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:RegistryPackage">
+                  <rim:Slot name="submissionTime">
+                     <rim:ValueList>
+                        <rim:Value>200905211223</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+                  <rim:Name>
+                     <rim:LocalizedString value="Consent SubmissionSet1 Name"/>
+                  </rim:Name>
+                  <rim:Description>
+                     <rim:LocalizedString value="Consent SubmissionSet1"/>
+                  </rim:Description>
+                  <rim:Classification classificationScheme="urn:uuid:a7058bb9-b4e4-4307-ba5b-e3f0ab85e12d" classifiedObject="SubmissionSet01" nodeRepresentation="" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_20">
+                     <rim:Slot name="authorPerson">
+                        <rim:ValueList>
+                           <rim:Value>Axolotl Elysium</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorInstitution">
+                        <rim:ValueList>
+                           <rim:Value>Department of Veterans Affairs</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorRole">
+                        <rim:ValueList>
+                           <rim:Value>Primary Care Provider</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Slot name="authorSpecialty">
+                        <rim:ValueList>
+                           <rim:Value>General</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                  </rim:Classification>
+                  <rim:Classification classificationScheme="urn:uuid:aa543740-bdda-424e-8c96-df4873be8500" classifiedObject="SubmissionSet01" nodeRepresentation="History and Physical" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification" id="id_21">
+                     <rim:Slot name="codingScheme">
+                        <rim:ValueList>
+                           <rim:Value>Connect-a-thon contentTypeCodes</rim:Value>
+                        </rim:ValueList>
+                     </rim:Slot>
+                     <rim:Name>
+                        <rim:LocalizedString value="History and Physical"/>
+                     </rim:Name>
+                  </rim:Classification>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:96fdda7c-d067-4183-912e-bf5ee74998a8" value="2.1.11111.1.2" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_22" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.uniqueId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:554ac39e-e3fe-47fe-b233-965d2a147832" value="129.6.58.92.1.1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_23" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.sourceId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+                  <rim:ExternalIdentifier identificationScheme="urn:uuid:6b5aea1a-874d-4603-a4bc-96a0a7b38446" value="500000001^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier" id="id_24" registryObject="SubmissionSet01">
+                     <rim:Name>
+                        <rim:LocalizedString value="XDSSubmissionSet.patientId"/>
+                     </rim:Name>
+                  </rim:ExternalIdentifier>
+               </rim:RegistryPackage>
+               <rim:Association associationType="urn:oasis:names:tc:ebxml-regrep:AssociationType:HasMember" sourceObject="SubmissionSet01" targetObject="Document01" id="ID_25276323_1" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Association">
+                  <rim:Slot name="SubmissionSetStatus">
+                     <rim:ValueList>
+                        <rim:Value>Original</rim:Value>
+                     </rim:ValueList>
+                  </rim:Slot>
+               </rim:Association>
+               <rim:Classification classifiedObject="SubmissionSet01" classificationNode="urn:uuid:a54d6aa5-d40d-43f9-88c5-b4633d873bdd" id="ID_25276323_3" objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:Classification"/>
+            </rim:RegistryObjectList>
+         </lcm:SubmitObjectsRequest>
+         <xdsb:Document id="Document01">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxQb2xpY3kgeG1sbnM9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoyLjA6cG9saWN5OnNjaGVtYTpvcyIgeG1sbnM6bmhpbj0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4iIHBvbGljeWlkPSIxMjM0NTY3OC0xMjM0LTEyMzQtMTIzNC0xMjM0NTY3ODlhYmMiIHJ1bGVjb21iaW5pbmdhbGdpZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjEuMDpydWxlLWNvbWJpbmluZy1hbGdvcml0aG06Zmlyc3QtYXBwbGljYWJsZSI+DQoJPERlc2NyaXB0aW9uPlNhbXBsZSBYQUNNTCBwb2xpY3kgc2hvd2luZyBhY2Nlc3MgYnkgdXNlciByb2xlPC9EZXNjcmlwdGlvbj4NCgk8VGFyZ2V0Pg0KCQk8QWN0aW9ucz4NCgkJCTxBY3Rpb24+DQoJCQkJPEFjdGlvbk1hdGNoIE1hdGNoSWQ9InVybjpvYXNpczpuYW1lczp0Yzp4YWNtbDoxLjA6ZnVuY3Rpb246c3RyaW5nLWVxdWFsIj4NCgkJCQkJPEF0dHJpYnV0ZVZhbHVlIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiPmh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI3JldHJpZXZlRG9jdW1lbnQ8L0F0dHJpYnV0ZVZhbHVlPg0KCQkJCQk8QWN0aW9uQXR0cmlidXRlRGVzaWduYXRvciBBdHRyaWJ1dGVJZD0idXJuOm9hc2lzOm5hbWVzOnRjOnhhY21sOjIuMDphY3Rpb24iIERhdGFUeXBlPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSNhbnlVUkkiLz4NCgkJCQk8L0FjdGlvbk1hdGNoPg0KCQkJPC9BY3Rpb24+DQoJCTwvQWN0aW9ucz4NCgk8L1RhcmdldD4NCgk8RW52aXJvbm1lbnRzPg0KCQk8RW52aXJvbm1lbnQ+DQoJCQk8RW52aXJvbm1lbnRNYXRjaCBNYXRjaElkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbi9mdW5jdGlvbiNpbnN0YW5jZS1pZGVudGlmaWVyLWVxdWFsIj4NCgkJCQk8QXR0cmlidXRlVmFsdWUgRGF0YVR5cGU9Imh0dHA6Ly93d3cuaGhzLmdvdi9oZWFsdGhpdC9uaGluI2luc3RhbmNlLWlkZW50aXRpZmVyIj4NCgkJCQkJPFBhdGllbnRJZCBFeHRlbnNpb249IjUwMDAwMDAwMSIgUm9vdD0iMS4xIi8+DQoJCQkJPC9BdHRyaWJ1dGVWYWx1ZT4NCgkJCQk8RW52aXJvbm1lbnRBdHRyaWJ1dGVEZXNpZ25hdG9yIEF0dHJpYnV0ZUlkPSJodHRwOi8vd3d3Lmhocy5nb3YvaGVhbHRoaXQvbmhpbiNzdWJqZWN0LWlkIiBEYXRhVHlwZT0iaHR0cDovL3d3dy5oaHMuZ292L2hlYWx0aGl0L25oaW4jaW5zdGFuY2UtaWRlbnRpdGlmZXIiLz4NCgkJCTwvRW52aXJvbm1lbnRNYXRjaD4NCgkJPC9FbnZpcm9ubWVudD4NCgk8L0Vudmlyb25tZW50cz4NCgk8UnVsZSBFZmZlY3Q9IlBlcm1pdCIgUnVsZUlkPSIxMjYiPg0KCQk8RGVzY3JpcHRpb24+cGVybWl0IGFsbCBhY2Nlc3MgdG8gZG9jdW1lbnRzLjwvRGVzY3JpcHRpb24+DQoJCTxUYXJnZXQvPg0KCTwvUnVsZT4NCjwvUG9saWN5Pg0K</xdsb:Document>
+      </xdsb:ProvideAndRegisterDocumentSetRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="75565bf2-ebf9-4b19-af2b-ce19e6609af7"/>
+            <con:assertion type="Schema Compliance" id="f62a5346-d437-4484-9cff-d8974b3cf1d5">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="467b80c1-f330-4727-831c-f10ad26f85ec"/>
+            <con:assertion type="XPath Match" id="32dddfb0-e68d-45df-8342-19db6af85c03">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0';
+//ns2:RegistryResponse[1]/@status</path>
+                <content>urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByPatientId" type="request" id="04f0ef02-77da-45bd-82b9-4a6a2dda4e25">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByPatientId" id="c8af9122-2972-45a4-82cb-38d52f34fc50">
+            <con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="b40adc4f-4ebd-4bf5-9812-b3d30bd65412"/>
+            <con:assertion type="Schema Compliance" id="80569949-0012-4644-a9fe-d50585127b72">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="ab542964-6da8-4df9-8d04-d65260ad8e5f"/>
+            <con:assertion type="XPath Match" id="5d375b41-97ff-4df8-9d8b-452304ce2b0b">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>${#Project#DocUniqueId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="751b4a7b-038f-4c81-a211-cedd6c27cb67">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByDocUniqueId" type="request" id="0a18ade9-fafd-488e-aef1-0136186df777">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByDocUniqueId" id="f22cbc9f-9248-448d-ac80-a795faf3e265">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryUniqueId">
+               <urn1:ValueList>
+                  <urn1:Value>${#Project#DocUniqueId}</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="2d4d256e-c9d4-4154-9695-ea762d1598f9"/>
+            <con:assertion type="Schema Compliance" id="11c28e8e-fd00-4b98-8cff-5ef02022328d">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="b72e528c-9734-4273-976f-aa1da780607e"/>
+            <con:assertion type="XPath Match" id="629c7b5d-b0a5-4520-a88d-41402742d214">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>${#Project#DocUniqueId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="671ddd52-168d-4a6d-b23b-b457a7068798">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="60e7c5c1-da85-411b-a7fe-96ab81ec9600">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="711cf366-8123-46c9-b0fe-8832bab77bcb">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="a87a7d0d-1bb0-4e50-86b2-76a929305c0d">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByEventCode" type="request" id="edceaaca-fdf7-46c2-9b59-565db4ce9e7e">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByEventCode" id="7af2dad1-4558-4e41-988f-d7368e973ed6">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryEventCodeList">
+               <urn1:ValueList>
+                  <urn1:Value>('T-32000^^SNM3')</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="8cbdcfc4-4e14-4423-9a79-b44d11a44e27"/>
+            <con:assertion type="Schema Compliance" id="3fe0bf8b-bbdd-4aca-b66f-47d563a581d0">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="d59015d4-b28b-45a6-95ab-38a21a5e7e9a"/>
+            <con:assertion type="XPath Match" id="e971e5f4-5a7a-4dba-8c7c-626e1e6650af">
+              <con:configuration><path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path><content>${#Project#DocUniqueId}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>true</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="c37f298b-4fca-44e1-9fca-dea7093cb69c">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="a9d23a20-ff14-4a31-bf66-a7cc9ebe351a">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="627855c7-a54b-4c6b-ae37-09cc60d29140">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="7c4313a1-0982-48b3-82dd-febbe2e7071f">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryByEventCodeScheme" type="request" disabled="true" id="e409f679-0cb7-4cec-900d-fd010f895d34">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryByEventCodeScheme" id="ea19aa1d-a46c-43a2-a875-b358ad4191ef">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryEventCodeList">
+               <urn1:ValueList>
+                  <urn1:Value>('T-32000^^SNM3')</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>12344321dqtst^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="6d0d2026-c3ec-4710-8a76-823486d82d7f"/>
+            <con:assertion type="Schema Compliance" id="0fb577d5-ea72-4556-9b75-a7fa0dda45bc">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="563ca90a-843c-4218-a49f-95cfc3dad269"/>
+            <con:assertion type="XPath Match" id="3d24937f-5cd3-47e3-bb90-143b312f65f6">
+              <con:configuration>
+                <path>declare namespace ns3='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns3:RegistryObjectList[1]/ns3:ExtrinsicObject[1]/ns3:ExternalIdentifier[1]/@value</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:ExternalIdentifier[1]/@value}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Document count is 1" type="XPath Match" id="4c8816d2-32fd-4787-9ffb-a984bebea775">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>1</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Creation Time" type="XPath Match" id="f532ef7c-b607-42c6-913e-c93d650fe656">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='creationTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='creationTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Start Time" type="XPath Match" id="fd8463d1-13b1-4649-9f2f-37db6cef2769">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStartTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStartTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion name="Service Stop Time" type="XPath Match" id="cfc6bd1d-0f7c-4e3c-8afa-f75eb3a4e026">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject[1]/ns2:Slot[@name='serviceStopTime']/ns2:ValueList[1]/ns2:Value[1]</path>
+                <content>${Store Document#Request#//xdsb:ProvideAndRegisterDocumentSetRequest[1]/lcm:SubmitObjectsRequest[1]/rim:RegistryObjectList[1]/rim:ExtrinsicObject[1]/rim:Slot[@name='serviceStopTime']/rim:ValueList[1]/rim:Value[1]}</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="QueryNoResults" type="request" id="941a2ad3-7e71-4b98-b4f0-d5a7ed73a0e5">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>DocumentRegistry_Binding_Soap</con:interface>
+          <con:operation>DocumentRegistry_RegistryStoredQuery</con:operation>
+          <con:request name="QueryNoResults" id="878679b6-662c-4158-941e-4a2c64e150e9">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>${#Project#Endpoint-DocRegistry}</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0" xmlns:urn1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+   <soapenv:Header/>
+   <soapenv:Body projectName="DocRegistryAndRepository" testCase="DocumentQueryTest">
+      <urn:AdhocQueryRequest id="?" comment="?" federated="false" federation="?" startIndex="0" maxResults="-1">
+         <urn:ResponseOption returnType="LeafClass" returnComposedObjects="true"/>
+         <urn1:AdhocQuery id="urn:uuid:14d4debf-8f97-4251-9a74-a90016b0af0d" home="1.1">
+            <urn1:Slot name="$XDSDocumentEntryPatientId">
+               <urn1:ValueList>
+                  <urn1:Value>boguspatientid^^^&amp;1.3.6.1.4.1.21367.2005.3.7&amp;ISO</urn1:Value>
+               </urn1:ValueList>
+            </urn1:Slot>
+         </urn1:AdhocQuery>
+      </urn:AdhocQueryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="721ada89-25b5-4e9d-aade-a97dadedc80d"/>
+            <con:assertion type="Schema Compliance" id="c63b25cb-0d3e-425a-8f7d-7ab184960901">
+              <con:configuration/>
+            </con:assertion>
+            <con:assertion type="SOAP Fault Assertion" id="847c767a-4eef-4c79-be90-b4a5c26ca55f"/>
+            <con:assertion name="Result count of 0" type="XPath Match" id="a8ab6133-a522-4e50-824a-e5cc87039a9d">
+              <con:configuration>
+                <path>declare namespace ns2='urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0';
+declare namespace ns4='urn:oasis:names:tc:ebxml-regrep:xsd:query:3.0';
+count(//ns4:AdhocQueryResponse[1]/ns2:RegistryObjectList[1]/ns2:ExtrinsicObject)</path>
+                <content>0</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>true</ignoreNamspaceDifferences>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:testStep name="Delete Document" type="groovy" id="ef504314-e7e5-4296-ab63-b518feb30cb6">
+        <con:settings/>
+        <con:config><script>context.withSql('DocRepositoryDB') { sql -> 
+  def table = context.findProperty('DocumentTable')
+  def col = context.findProperty('DocCol')
+  def val = context.findProperty('DocVal1')
+
+  def table1 = context.findProperty('EventCodeTable')
+  def col1 = context.findProperty('EventCol')
+  def col2 = context.findProperty('EventCol1')
+  def val1 = context.findProperty('EventVal')
+  def val2 = context.findProperty('EventVal2');
+
+  sql.execute('delete from ' + table1 + ' where ' + col1 + ' = ' + val1 )
+  sql.execute("delete from docrepository where DocumentUniqueId like (select DocumentUniqueId from " + table + " where " + col + " = " + val +")" )
+  sql.execute("delete from " + table + " where " + col + " = " + val )
+}</script></con:config>
+      </con:testStep>
+      <con:setupScript>nhinc.FileUtils.backupConfiguration(context.findProperty("GatewayPropDir"), log);
+context.setGatewayStandard(false);</con:setupScript>
+      <con:properties>
+        <con:property>
+          <con:name>startDate</con:name>
+          <con:value>2018-05-25T18:27:03Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>endDate</con:name>
+          <con:value>2018-05-25T18:37:03Z</con:value>
+        </con:property>
+        <con:property>
+          <con:name>sigDate</con:name>
+          <con:value>05/25/2018 18:27:03</con:value>
+        </con:property>
+        <con:property>
+          <con:name>expireDate</con:name>
+          <con:value>2018-06-24T00:00:00Z</con:value>
+        </con:property>
+      </con:properties>
+      <con:reportParameters/>
+      <con:tearDownScript>nhinc.FileUtils.restoreConfiguration(context.findProperty("GatewayPropDir"), log);
+context.setGatewayStandard(true);</con:tearDownScript>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:requirements/>
+  <con:properties>
+    <con:property>
+      <con:name>DBHost</con:name>
+      <con:value>localhost</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DBPass</con:name>
+      <con:value>nhincpass</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DBPort</con:name>
+      <con:value>3306</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DBUser</con:name>
+      <con:value>nhincuser</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DocCol</con:name>
+      <con:value>DocumentTitle</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DocRepositoryDB</con:name>
+      <con:value>docrepository</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DocumentTable</con:name>
+      <con:value>docregistry</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DocVal</con:name>
+      <con:value>'ProvideAndRegisterTestDocument'</con:value>
+    </con:property>
+    <con:property>
+      <con:name>DocVal1</con:name>
+      <con:value>'DocQueryTestDocument'</con:value>
+    </con:property>
+    <con:property>
+      <con:name>Endpoint-DocRegistry</con:name>
+      <con:value>http://localhost:8080/CONNECTAdapter/DocumentRegistry_Service</con:value>
+    </con:property>
+    <con:property>
+      <con:name>Endpoint-DocRepository</con:name>
+      <con:value>http://localhost:8080/CONNECTAdapter/DocumentRepository_Service</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventCodeTable</con:name>
+      <con:value>eventcode</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventCol</con:name>
+      <con:value>EventCode</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventCol1</con:name>
+      <con:value>EventCodeScheme</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventVal</con:name>
+      <con:value>'ProvideAndRegisterTestEventCodeValue'</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventVal1</con:name>
+      <con:value>'DocQueryTestEventCodeValue'</con:value>
+    </con:property>
+    <con:property>
+      <con:name>EventVal2</con:name>
+      <con:value>'SNM3'</con:value>
+    </con:property>
+    <con:property>
+      <con:name>GatewayPropDir</con:name>
+      <con:value/>
+    </con:property>
+    <con:property>
+      <con:name>ASUsername</con:name>
+      <con:value>admin</con:value>
+    </con:property>
+    <con:property>
+      <con:name>ASPassword</con:name>
+      <con:value>adminadmin</con:value>
+    </con:property>
+    <con:property>
+      <con:name>JMXHost</con:name>
+      <con:value>localhost</con:value>
+    </con:property>
+    <con:property>
+      <con:name>JMXPort</con:name>
+      <con:value>9990</con:value>
+    </con:property>
+  <con:property><con:name>DocUniqueID</con:name><con:value>CONNECT0</con:value></con:property></con:properties>
+  <con:afterLoadScript>def propertiesFilename = project.path[0..(project.path.size()-4)] + 'properties'
+def propertiesFile = new File(propertiesFilename)
+if (propertiesFile.exists()) {
+	def props = new Properties()
+	props.load(new FileReader(propertiesFile))
+	props.each { key, value ->
+	    project.setPropertyValue(key, value)
+	}
+}
+
+
+TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+def testRunListener = [
+  afterRun: { testRunner, runContext -> },
+  afterStep: { testRunner, runContext, result -> },
+  beforeStep: { testRunner, runContext -> },
+  beforeStep: { testRunner, runContext, testStep -> },
+  beforeRun: { testRunner, runContext -> 
+    use (org.codehaus.groovy.runtime.TimeCategory) {
+      def startDate = 5.minutes.ago
+      def endDate = 5.minutes.from.now
+      def expireDate = 30.days.from.now
+
+      def df = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+      def dfSig = "MM/dd/yyyy' 'HH:mm:ss"
+
+      runContext.testCase.setPropertyValue("startDate", startDate.format(df))
+      runContext.testCase.setPropertyValue("endDate", endDate.format(df))
+      runContext.testCase.setPropertyValue("sigDate", startDate.format(dfSig))
+      runContext.testCase.setPropertyValue("expireDate", expireDate.format(df))
+    }
+  }   
+] as com.eviware.soapui.model.testsuite.TestRunListener
+
+project.testSuiteList*.testCaseList.flatten()*.addTestRunListener(testRunListener)
+
+
+
+com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext.metaClass.findProperty = { propertyName ->
+    return delegate.getProperty(propertyName) ?:
+                delegate.testCase.getPropertyValue(propertyName) ?:
+                delegate.testCase.testSuite.getPropertyValue(propertyName) ?:
+                delegate.testCase.testSuite.project.getPropertyValue(propertyName) ?:
+                com.eviware.soapui.SoapUI.globalProperties.getPropertyValue(propertyName)
+}
+
+com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext.metaClass.withSql = { dbOrPropertyName, block ->
+  def dbName = delegate.findProperty(dbOrPropertyName) ?: dbOrPropertyName
+  def host = delegate.findProperty('DBHost')
+  def port = delegate.findProperty('DBPort')
+  def user = delegate.findProperty('DBUser')
+  def pass = delegate.findProperty('DBPass')
+
+  def connectString = "jdbc:mysql://${host}:${port}/${dbName}"
+  def sql = groovy.sql.Sql.newInstance(connectString, user, pass, "com.mysql.jdbc.Driver");
+  try {
+     block(sql)
+  } finally {
+    sql.close()
+  }
+}
+
+import javax.management.remote.JMXConnectorFactory as JmxFactory
+import javax.management.remote.JMXServiceURL as JmxUrl
+import javax.management.remote.*;
+
+com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext.metaClass.setGatewayStandard = { standard ->
+  def username = delegate.findProperty("ASUsername");
+  def password = delegate.findProperty("ASPassword");
+  def jmxHost = delegate.findProperty("JMXHost");
+  def jmxPort = delegate.findProperty("JMXPort");
+  log.info "Value of the Param Name -->"+name;
+  // use jmx to set passthru mode
+  def env = [
+    (JMXConnector.CREDENTIALS): (String[])[username, password]
+  ];
+  def serverUrl = 'service:jmx:http-remoting-jmx://'+jmxHost+ ':' + jmxPort;
+  log.info "Standard valud-->"+standard
+  def server = JmxFactory.connect(new JmxUrl(serverUrl), env);
+  def config = new GroovyMBean(server.MBeanServerConnection, 'org.connectopensource.mbeans:type=Configuration');
+  //set the Gateway to Standard Mode
+    if (standard){
+  	config.setStandardMode();
+  	log.info "Inside STD"
+  }
+  else{
+  	log.info "Inside PASS"
+     config.setPassthruMode();	
+  }
+  server.close();
+  return true;
+}
+
+com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext.metaClass.isStandard = { serviceName, direction ->
+  def username = delegate.findProperty("ASUsername");
+  def password = delegate.findProperty("ASPassword");
+  def jmxHost = delegate.findProperty("JMXHost");
+  def jmxPort = delegate.findProperty("JMXPort");
+  log.info "Value of the Param Name -->"+name;
+  // use jmx to set passthru mode
+  def env = [
+    (JMXConnector.CREDENTIALS): (String[])[username, password]
+  ];
+  def serverUrl = 'service:jmx:http-remoting-jmx://'+jmxHost+ ':' + jmxPort;
+   
+  def server = JmxFactory.connect(new JmxUrl(serverUrl), env);
+  def config = new GroovyMBean(server.MBeanServerConnection, 'org.connectopensource.mbeans:type=Configuration');
+  //set the Gateway to Standard Mode
+  def isStandard = config.isStandard(serviceName, direction);
+  server.close();
+  return isStandard;
+}
+
+com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext.metaClass.setGatewayStandard = { standard, serviceName, direction ->
+  def username = delegate.findProperty("ASUsername");
+  def password = delegate.findProperty("ASPassword");
+  def jmxHost = delegate.findProperty("JMXHost");
+  def jmxPort = delegate.findProperty("JMXPort");
+  log.info "Value of the Param Name -->"+name;
+  // use jmx to set passthru mode
+  def env = [
+    (JMXConnector.CREDENTIALS): (String[])[username, password]
+  ];
+  def serverUrl = 'service:jmx:http-remoting-jmx://'+jmxHost+ ':' + jmxPort;
+  log.info "Standard valud-->"+standard
+  def server = JmxFactory.connect(new JmxUrl(serverUrl), env);
+  def config = new GroovyMBean(server.MBeanServerConnection, 'org.connectopensource.mbeans:type=Configuration');
+  //set the Gateway to Standard Mode
+    if (standard){
+  	config.setStandardMode(serviceName, direction);
+  	log.info "Inside STD"
+  }
+  else{
+  	log.info "Inside PASS"
+     config.setPassthruMode(serviceName, direction);	
+  }
+  server.close();
+  return true;
+}</con:afterLoadScript>
+  <con:wssContainer/>
+  <con:databaseConnectionContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:oAuth1ProfileContainer/><con:reporting>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:xmlTemplates/>
+    <con:parameters/>
+  </con:reporting>
+  <con:sensitiveInformation/>
+</con:soapui-project>

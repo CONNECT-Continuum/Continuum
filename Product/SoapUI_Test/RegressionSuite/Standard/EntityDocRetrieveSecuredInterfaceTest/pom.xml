@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.connectopensource</groupId>
+        <artifactId>Standard</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>EntityDocRetrieveSecuredInterfaceTest</artifactId>
+    <name>Maven 3 soapUI EntityDocRetrieveSecuredInterfaceTest Standard</name>
+    <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <skip.unpack>false</skip.unpack>
+        <soapui.testFailIgnore>true</soapui.testFailIgnore>
+    </properties>
+    <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.redfish4ktc.soapui</groupId>
+                        <artifactId>maven-soapui-extension-plugin</artifactId>
+                        <configuration>
+                            <settingsFile>${project.basedir}/src/main/resources/soapui-settings.xml</settingsFile>
+                            <outputFolder>${project.basedir}/target/soapui/output/</outputFolder>
+                            <soapuiProperties>
+                                <property>
+                                    <name>soapui.logroot</name>
+                                    <value>${project.build.directory}/soapui/my_custom_logs/</value>
+                                </property>
+                                <property>
+                                    <name>soapui.scripting.library</name>
+                                    <value>${project.basedir}/src/main/resources/groovy_scripts</value>
+                                </property>
+                                <property>
+                                    <name>soapui.ext.libraries</name>
+                                    <value>${project.basedir}/src/main/resources/ext</value>
+                                </property>
+                            </soapuiProperties>
+                            <testSuite>${test.suite}</testSuite>
+                            <testCase>${test.case}</testCase>
+                            <projectProperties>
+                                <value>GatewayPropDir=${project.parent.parent.parent.basedir}/${wildfly.properties.dir}</value>
+                            </projectProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>EntityDocRetrieveSecuredInterfaceTest-soapui-project.xml</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <projectFile>${project.basedir}/EntityDocRetrieveSecuredInterfaceTest-soapui-project.xml</projectFile>
+                                    <outputFolder>${project.build.directory}/soapui/output/CONN-891</outputFolder>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>test-verify</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>test-verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+</project>
